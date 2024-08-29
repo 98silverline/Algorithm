@@ -38,9 +38,14 @@ public class Solution {
 	}
 	
 	static void solution() {
+		int cnt = 1;
 		for(int i = 0; i < E; i++) {
+			if(cnt == V) return;
 			Point p = arr.get(i);
-			if(Union(p.x, p.y)) answer += p.cost;
+			if(Union(p.x, p.y)) {
+				answer += p.cost;
+				cnt++;
+			}
 		}
 	}
 	
