@@ -2,9 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-	/*
-	 * 
-	 * */
 	static int T, N, answer;
 	static int[] ch;
 	static int[][] map;
@@ -66,15 +63,9 @@ public class Solution {
 			for(int p = 2; p < N; p++) {
 				for(int k = 2; k < N; k++) {
 					for(int i = 0; i < N; i++) {
-						for(int j = 0; j < N; j++) {
-							solution(p, k, i, j);
-							if(answer == 2 * (N - 1)) break;
-						}
-						if(answer == 2 * (N - 1)) break;
+						for(int j = 0; j < N; j++) solution(p, k, i, j);
 					}
-					if(answer == 2 * (N - 1)) break;
 				}
-				if(answer == 2 * (N - 1)) break;
 			}
 			sb.append(answer + "\n");
 		}
