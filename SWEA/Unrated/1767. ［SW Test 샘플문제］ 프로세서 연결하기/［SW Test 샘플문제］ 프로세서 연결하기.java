@@ -56,6 +56,7 @@ public class Solution {
     }
 
     static void DFS(int L) {
+        if(willConnect + (cores.size() - L) < maxConnect) return;
         if(L == cores.size()) {
             if(willConnect < maxConnect) return;
             else simulation();
