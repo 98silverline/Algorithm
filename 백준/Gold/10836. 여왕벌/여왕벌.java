@@ -7,9 +7,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int M, N;
-    static int[][] map, grow;
-    static int[] dx = {-1, -1, 0};
-    static int[] dy = {0, -1, -1};
+    static int[] row, col;
 
     public static void solution(int zero, int one, int two) {
         Queue<Integer> que = new LinkedList<>();
@@ -18,25 +16,10 @@ public class Main {
         for(int i = 0; i < two; i++) que.offer(2);
 
         for(int i = M - 1; i > 0; i--) {
-            grow[i][0] = que.poll();
-            map[i][0] += grow[i][0];
+             row[i] += que.poll();
         }
         for(int i = 0; i < M; i++) {
-            grow[0][i] = que.poll();
-            map[0][i] += grow[0][i];
-        }
-
-        for(int i = 1; i < M; i++) {
-            for (int j = 1; j < M; j++) {
-                int max = 0;
-                for(int k = 0; k < 3; k++) {
-                    int nx = i + dx[k];
-                    int ny = j + dy[k];
-                    if(nx >= 0 && ny >= 0 && nx < M && ny < M) max = Math.max(max, grow[nx][ny]);
-                }
-                grow[i][j] = max;
-                map[i][j] += max;
-            }
+            col[i] += que.poll();
         }
     }
     public static void main(String[] args) throws IOException {
@@ -44,8 +27,8 @@ public class Main {
         StringTokenizer st = new StringTokenizer(bf.readLine());
         M = Integer.parseInt(st.nextToken());
         N = Integer.parseInt(st.nextToken());
-        map = new int[M][M];
-        grow = new int[M][M];
+        row = new int[M];
+        col = new int[M];
 
         for(int i = 0; i < N; i++) {
             st = new StringTokenizer(bf.readLine());
@@ -55,9 +38,10 @@ public class Main {
             solution(zero, one, two);
         }
 
-        for (int[] ints : map) {
-            for (int anInt : ints) {
-                System.out.print((anInt + 1) + " ");
+        for(int i = 0; i < M; i++) {
+            for (int j = 0; j < M; j++) {
+                if (i > 0 && j == 0) System.out.print(row[i] + 1 + " ");
+                else System.out.print(Math.max(row[i], col[j]) + 1 + " ");
             }
             System.out.println();
         }
