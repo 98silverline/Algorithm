@@ -5,69 +5,69 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int N, M;
-    static int[] arr, minTree, maxTree;
+    static int[] minTree, maxTree, arr;
 
     static void treeSetting() {
         double treeHeight = Math.ceil(Math.log(N)/Math.log(2)) + 1;
-        long nodeNum = Math.round(Math.pow(2, treeHeight));
-        minTree = new int[(int) nodeNum];
-        maxTree = new int[(int) nodeNum];
+        long treeNode = Math.round(Math.pow(2, treeHeight));
+        minTree = new int[Math.toIntExact(treeNode)];
+        maxTree = new int[Math.toIntExact(treeNode)];
     }
 
-    static int minTreeInit (int start, int end, int node) {
-        if(start == end) return minTree[node] = arr[start];
+    static int treeInit1(int node, int start, int end) {
+        if(start == end) {
+            return minTree[node] = arr[start];
+        } else return minTree[node] = Math.min(treeInit1(node * 2, start, (start + end) / 2)
+        , treeInit1(node * 2 + 1, (start + end) / 2 + 1, end));
+    }
+
+    static int treeInit2(int node, int start, int end) {
+        if(start == end) {
+            return maxTree[node] = arr[start];
+        } else return maxTree[node] = Math.max(treeInit2(node * 2, start, (start + end) / 2)
+        , treeInit2(node * 2 + 1, (start + end) / 2 + 1, end));
+    }
+
+    static int findMin(int node, int start, int end, int left, int right) {
+        if(left > end || right < start) return Integer.MAX_VALUE;
         else {
-            return minTree[node] = Math.min(minTreeInit(start, (start + end) / 2, node * 2),
-                    minTreeInit((start + end) / 2 + 1, end, node * 2 + 1));
+            if(start >= left && end <= right) return minTree[node];
+            else {
+                return Math.min(findMin(node * 2, start, (start + end) / 2, left, right)
+                , findMin(node * 2 + 1, (start + end) / 2 + 1, end, left, right));
+            }
         }
     }
 
-    static int maxTreeInit (int start, int end, int node) {
-        if(start == end) return maxTree[node] = arr[start];
+    static int findMax(int node, int start, int end, int left, int right) {
+        if(left > end || right < start) return Integer.MIN_VALUE;
         else {
-            return maxTree[node] = Math.max(maxTreeInit(start, (start + end) / 2, node * 2),
-                    maxTreeInit((start + end) / 2 + 1, end, node * 2 + 1));
+            if(start >= left && end <= right) return maxTree[node];
+            else {
+                return Math.max(findMax(node * 2, start, (start + end) / 2, left, right)
+                        , findMax(node * 2 + 1, (start + end) / 2 + 1, end, left, right));
+            }
         }
     }
-
-    static int treeMin(int node, int start, int end, int left, int right) {
-        if(end < left || start > right) return Integer.MAX_VALUE;
-        else if (left <= start && end <= right) return minTree[node];
-        else {
-            return Math.min(treeMin(node * 2, start, (start + end) / 2, left, right)
-            , treeMin(node * 2 + 1, (start + end) / 2 + 1, end, left, right));
-        }
-    }
-    static int treeMax(int node, int start, int end, int left, int right) {
-        if(end < left || start > right) return Integer.MIN_VALUE;
-        else if (left <= start && end <= right) return maxTree[node];
-        else {
-            return Math.max(treeMax(node * 2, start, (start + end) / 2, left, right)
-            , treeMax(node * 2 + 1, (start + end) / 2 + 1, end, left, right));
-        }
-    }
-
-
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        arr = new int[N + 1];
-
-        //원본배열 저장
+        StringBuilder sb = new StringBuilder();
+        arr = new int[N];
         for (int i = 0; i < N; i++) arr[i] = Integer.parseInt(bf.readLine());
 
         treeSetting();
-        minTreeInit(0, N - 1, 1);
-        maxTreeInit(0, N - 1, 1);
-
+        treeInit1(1, 0, N - 1);
+        treeInit2(1, 0, N - 1);
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(bf.readLine());
-            int a = Integer.parseInt(st.nextToken()) - 1;
-            int b = Integer.parseInt(st.nextToken()) - 1;
-            System.out.println(treeMin(1, 0, N - 1, a, b) + " " + treeMax(1, 0, N - 1, a, b));
+            int left = Integer.parseInt(st.nextToken()) - 1;
+            int right = Integer.parseInt(st.nextToken()) - 1;
+            sb.append(findMin(1, 0, N - 1, left, right)).append(" ").append(findMax(1, 0, N - 1, left, right)).append("\n");
         }
+        System.out.println(sb);
     }
 }
