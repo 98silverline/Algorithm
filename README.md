@@ -23,4 +23,12 @@ This is an auto push repository for Baekjoon Online Judge created with [Baekjoon
 |  |
 | ------- |
 | [0085-maximal-rectangle](https://github.com/98silverline/Algorithm/tree/master/0085-maximal-rectangle) |
+## Hash Table
+|  |
+| ------- |
+| [1500-count-largest-group](https://github.com/98silverline/Algorithm/tree/master/1500-count-largest-group) |
+## Math
+|  |
+| ------- |
+| [1500-count-largest-group](https://github.com/98silverline/Algorithm/tree/master/1500-count-largest-group) |
 <!---LeetCode Topics End-->
