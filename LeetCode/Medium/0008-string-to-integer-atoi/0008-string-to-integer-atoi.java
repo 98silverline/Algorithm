@@ -1,29 +1,24 @@
 class Solution {
     public int myAtoi(String s) {
-        boolean flag = false;
+        int sign = 1;
         int idx = 0;
-        while(s.length() > idx && s.charAt(idx) == ' ') idx++;
-        if(s.length() > idx && s.charAt(idx) == '-') {
-            flag = true;
-            idx++;
-        } else if (s.length() > idx && s.charAt(idx) == '+') idx++;
-        if(s.length() > idx && !Character.isDigit(s.charAt(idx))) return 0;
-
-        int answer = 0;
-        Queue<Integer> queue = new LinkedList<>();
-        
-        while(s.length() > idx && Character.isDigit(s.charAt(idx))) {
-            queue.offer(s.charAt(idx) - '0');
+        int len = s.length();
+        long answer = 0;
+        while(idx < len && s.charAt(idx) == ' ') idx++;
+        if(idx >= len) return 0;
+        if(s.charAt(idx) == '-' || s.charAt(idx) == '+') {
+            sign = s.charAt(idx) == '-' ? sign * -1 : 1;
             idx++;
         }
 
-        while(!queue.isEmpty()) {
-            int cur = queue.poll();
-            if(flag) cur = cur * -1;
-            if(answer > Integer.MAX_VALUE / 10 || (answer == Integer.MAX_VALUE / 10 && cur > 7)) return Integer.MAX_VALUE;
-            if(answer < Integer.MIN_VALUE / 10 || (answer == Integer.MIN_VALUE / 10 && cur < -8)) return Integer.MIN_VALUE;
-            answer = answer * 10 + cur;
+        while(idx < len && Character.isDigit(s.charAt(idx))) {
+            answer = answer * 10 + s.charAt(idx) - '0';
+            if(answer > Integer.MAX_VALUE) {
+                return sign == -1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            }
+            idx++;
         }
-        return answer;
+
+        return (int) answer * sign;
     }
 }
