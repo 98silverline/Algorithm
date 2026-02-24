@@ -4,14 +4,14 @@ class Solution {
         int pt1 = m - 1;
         int pt2 = n - 1;
 
-        if(pt2 < 0) return;
-        else if (pt1 < 0) {
-            int cnt = 0;
-            for(int k : nums2) {
-                nums1[cnt] = n;
-                cnt++;
-            }
-        }
+        // if(pt2 < 0) return;
+        // else if (pt1 < 0) {
+        //     int cnt = 0;
+        //     for(int k : nums2) {
+        //         nums1[cnt] = n;
+        //         cnt++;
+        //     }
+        // }
         while(pt1 >= 0 || pt2 >= 0) {
             if(pt1 < 0 && pt2 >= 0) {
                 nums1[cur] = nums2[pt2];
