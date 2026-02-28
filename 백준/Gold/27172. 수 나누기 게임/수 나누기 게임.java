@@ -1,43 +1,41 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
     static int N, max;
-    static int[] answer, ch;
-    static ArrayList<Integer> arr;
+    static int[] nums, ch, scores;
 
     static void solution() {
-        int idx = 0;
-        while(idx < arr.size() - 1) {
-            int cur = arr.get(idx);
-            cur += cur;
-            while(cur <= max) {
+        for (int i = 0; i < N; i++) {
+            int cur = nums[i];
+            int num = cur;
+            cur += num;
+            while (cur <= max) {
                 if(ch[cur] != 0) {
-                    answer[ch[arr.get(idx)]]++;
-                    answer[ch[cur]]--;
+                    scores[i]++;
+                    scores[ch[cur] - 1]--;
                 }
-                cur += arr.get(idx);
+                cur += num;
             }
-            idx++;
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(bf.readLine());
-        answer = new int[N + 1];
         ch = new int[1000001];
-        arr = new ArrayList<>();
+        scores = new int[N];
+        nums = new int[N];
+        max = Integer.MIN_VALUE;
+
         StringTokenizer st = new StringTokenizer(bf.readLine());
-        for (int i = 1; i <= N; i++) {
-            int n = Integer.parseInt(st.nextToken());
-            ch[n] = i;
-            arr.add(n);
+        for(int i = 0; i < N; i++) {
+            int cur = Integer.parseInt(st.nextToken());
+            nums[i] = cur;
+            ch[cur] = i + 1;
+            max = Math.max(max, cur);
         }
-        Collections.sort(arr);
-        max = arr.get(arr.size() - 1);
         solution();
-        for (int i = 1; i <= N; i++) {
-            System.out.print(answer[i] + " ");
-        }
+        for(int n : scores) System.out.print(n + " ");
     }
 }
